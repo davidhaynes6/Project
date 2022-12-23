@@ -26,5 +26,12 @@ namespace project
         IMG_Quit();
         TTF_Quit();
         Mix_Quit();
+
+        PROJECT_INFO("this is an info!");
+        PROJECT_ERROR("this is an error!");
+        PROJECT_WARNING("this is a warning!");
+
+        PROJECT_ASSERT(false && "runtime assertion!");
+        //PROJECT_STATIC_ASSERT(false && "static assertion!");
     }
 }

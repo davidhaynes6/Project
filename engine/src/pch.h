@@ -37,3 +37,28 @@
         #define PROJECT_API
     #endif
 #endif
+
+#if defined(_DEBUG)
+    #define PROJECT_LOG(level, message, ...) \
+    fprintf(stderr, "[%s] ", level); \
+    fprintf(stderr, message, ##__VA_ARGS__); \
+    fprintf(stderr, "\n");
+
+    #define PROJECT_WARNING(message, ...) PROJECT_LOG("warning", message, ##__VA_ARGS__)
+    #define PROJECT_ERROR(message, ...) PROJECT_LOG("error", message, ##__VA_ARGS__)
+    #define PROJECT_INFO(message, ...) PROJECT_LOG("info", message, ##__VA_ARGS__)
+#else
+    #define PROJECT_INFO
+    #define PROJECT_ERROR
+    #define PROJECT_WARNING
+#endif
+
+// runtime assertion
+#define PROJECT_ASSERT assert
+
+// static assertion
+#if defined(__clang__) || defined(__gcc__)
+    #define PROJECT_STATIC_ASSERT _STATIC_ASSERT
+#else
+    #define PROJECT_STATIC_ASSERT static_assert
+#endif
