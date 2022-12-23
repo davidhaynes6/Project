@@ -32,6 +32,5 @@ namespace project
         PROJECT_WARNING("this is a warning!");
 
         PROJECT_ASSERT(false && "runtime assertion!");
-        //PROJECT_STATIC_ASSERT(false && "static assertion!");
     }
 }
