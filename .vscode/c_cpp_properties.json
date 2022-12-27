@@ -5,6 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/windows/includes/**",
                 "${workspaceFolder}/engine/src/**",
+                "${workspaceFolder}/engine/src",
                 "${workspaceFolder}/engine/src"
             ],
             "defines": [
