@@ -3,7 +3,7 @@
 
 namespace project::ecs {
 	using entityid = size_t; 
-  u using componentid = uint32_t;
+    using componentid = uint32_t;
 	using signature = std::set<uint32_t>; 
 	using entitylist = std::set<entityid>; 
 
@@ -40,7 +40,7 @@ namespace project::ecs {
 		}
 
 		PROJECT_INLINE T& get(entityid e) {
-			FUSE_ASSERT(exits(e) && "entity out of range!");
+			PROJECT_ASSERT(exits(e) && "entity out of range!");
 			return (*std::find(_data.begin(), _data.end(), e)).data;
 		}
 

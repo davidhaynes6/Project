@@ -1,11 +1,17 @@
 #include "pch.h"
 #include "inputs.h"
+#include "ecs/scene.h"
 #include "application.h"
+#include "events/system.h"
 
 
 namespace project
 {
     static bool is_running = true;
+
+    PROJECT_INLINE bool on_quit(const quit_event&) {
+        return is_running = false;
+    }
 
     PROJECT_API void run_application(const app_config &config)
     {
@@ -41,13 +47,23 @@ namespace project
             exit(EXIT_FAILURE);
         }
 
+        auto scene = new ecs::scene(renderer);
+        scene->start();
+
         while (is_running) { 
             inputs::dispatch_events();
-            if(inputs::is_key(SDL_SCANCODE_A)) {
-                PROJECT_INFO("Key 'a' pressed!");
-            }
             SDL_RenderClear(renderer);
+            scene->update(0.0f);
             SDL_RenderPresent(renderer);
         }
+
+        // free memory
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        PROJECT_DELETE(scene);
+        IMG_Quit();
+        Mix_Quit();
+        TTF_Quit();
+        SDL_Quit();
     }
 }

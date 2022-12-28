@@ -1,11 +1,18 @@
 #pragma once
 #include "registry.h"
 
-namespace fuse::ecs {
+namespace project::ecs {
   struct entity {
-    PROJECT_INLINE entity(registry* r): _registry(r) { _entity = r->add_entity(); }
+    PROJECT_INLINE entity(registry* r): _registry(r) { 
+        _entity = r->add_entity(); 
+    }
+    
     PROJECT_INLINE entity(entityid e, registry* r): _registry(r), _entity(e) {}
-    PROJECT_INLINE operator entityid() { return _entity; }
+    
+    PROJECT_INLINE operator entityid() { 
+        return _entity; 
+    }
+
     PROJECT_INLINE entity() = default;
 
     template<typename T, typename... Args>
