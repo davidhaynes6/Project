@@ -1,5 +1,5 @@
 #pragma once
-#include "systems/test_system.h"
+#include "ecs/systems/text_render_system.h"
 
 namespace project::ecs
 {
@@ -7,7 +7,7 @@ namespace project::ecs
     {
         PROJECT_INLINE scene(SDL_Renderer *rd) : _renderer(rd)
         {
-            register_system<ecs::test_system>();
+            register_system<ecs::text_renderer_system>();
         }
 
         PROJECT_INLINE ~scene()
@@ -30,6 +30,7 @@ namespace project::ecs
 
         PROJECT_INLINE void update(float dt)
         {
+            SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
             for (auto &sys : _systems)
             {
                 sys->update(dt);
@@ -38,8 +39,17 @@ namespace project::ecs
 
         PROJECT_INLINE void start()
         {
-            auto e = this->add_entity("test");
-            e.add_component<transform_component>();
+            // load texture asset
+            auto font = _assets.load_font("assets/font.ttf", "ft", 30);
+
+            // add entity with text component
+            ecs::entity entity = add_entity("entity");
+
+            auto &tx = entity.add_component<ecs::text_component>();
+            tx.text = "This is a text!";
+            tx.font = font->id;
+
+            // start systems
             for (auto &sys : _systems)
             {
                 sys->start();
@@ -49,9 +59,9 @@ namespace project::ecs
         template <typename T>
         PROJECT_INLINE void register_system()
         {
-            //PROJECT_STATIC_ASSERT(std::is_base_of < ecs::system, <T>::value);
+            // PROJECT_STATIC_ASSERT(std::is_base_of < ecs::system, <T>::value);
             auto new_system = new T();
-            new_system->prepare(&_registry, _renderer);
+            new_system->prepare(&_registry, _renderer, &_assets);
             this->_systems.push_back(new_system);
         }
 
@@ -59,5 +69,6 @@ namespace project::ecs
         std::vector<ecs::system *> _systems;
         SDL_Renderer *_renderer = NULL;
         ecs::registry _registry;
+        asset_registry _assets;
     };
 }

@@ -4,45 +4,50 @@
 #include "application.h"
 #include "events/system.h"
 
-
 namespace project
 {
     static bool is_running = true;
 
-    PROJECT_INLINE bool on_quit(const quit_event&) {
+    PROJECT_INLINE bool on_quit(const quit_event &)
+    {
         return is_running = false;
     }
 
     PROJECT_API void run_application(const app_config &config)
     {
         // init SDL
-        if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        {
             PROJECT_ERROR("%s", SDL_GetError());
             exit(EXIT_FAILURE);
         }
         // init SDL_image
-        if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) < 0) {
+        if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) < 0)
+        {
             PROJECT_ERROR("%s", IMG_GetError());
         }
         // init SDL_ttf
-        if(TTF_Init() < 0) { 
-            PROJECT_ERROR("%s", TTF_GetError());         
+        if (TTF_Init() < 0)
+        {
+            PROJECT_ERROR("%s", TTF_GetError());
         }
         // init SDL_mixer
-        if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG) < 0 || 
-            Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512)) {
+        if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG) < 0 ||
+            Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 512))
+        {
             PROJECT_ERROR("%s", Mix_GetError());
         }
 
         // create window
         auto w_flags = (SDL_WindowFlags)(SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-        SDL_Window* window = SDL_CreateWindow(config.title.c_str(), SDL_WINDOWPOS_CENTERED, 
-        SDL_WINDOWPOS_CENTERED, config.width, config.height, w_flags);
+        SDL_Window *window = SDL_CreateWindow(config.title.c_str(), SDL_WINDOWPOS_CENTERED,
+                                              SDL_WINDOWPOS_CENTERED, config.width, config.height, w_flags);
 
-        // create renderer 
+        // create renderer
         auto r_flags = (SDL_RendererFlags)(SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         auto renderer = SDL_CreateRenderer(window, -1, r_flags);
-        if (!window || !renderer) {
+        if (!window || !renderer)
+        {
             PROJECT_ERROR("%s", SDL_GetError());
             exit(EXIT_FAILURE);
         }
@@ -50,11 +55,17 @@ namespace project
         auto scene = new ecs::scene(renderer);
         scene->start();
 
-        while (is_running) { 
+        while (is_running)
+        {
             inputs::dispatch_events();
             SDL_RenderClear(renderer);
             scene->update(0.0f);
             SDL_RenderPresent(renderer);
+
+            if(inputs::is_button(SDL_BUTTON_LEFT)) {
+                auto mouse = inputs::mouse_offset();
+                PROJECT_INFO("(%f, %f", mouse.x, mouse.y);
+            }
         }
 
         // free memory

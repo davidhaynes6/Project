@@ -1,14 +1,18 @@
 #pragma once
 #include "entity.h"
 #include <vector>
+#include "assets/registry.h"
+#include "ecs/components/common.h"
+#include "ecs/components/graphics.h"
 
 namespace project::ecs {
   struct system {
     PROJECT_INLINE virtual ~system() = default;
 
-    PROJECT_INLINE void prepare(registry* rg, SDL_Renderer* rd) {
+    PROJECT_INLINE void prepare(registry* rg, SDL_Renderer* rd, asset_registry* as) {
       this->_registry = rg;
       this->_renderer = rd;
+      this->_assets = as;
     }
     
     template<typename T> 
@@ -26,5 +30,6 @@ namespace project::ecs {
   protected:
     SDL_Renderer* _renderer = NULL;
     registry* _registry = NULL;
+    asset_registry* _assets = NULL;
   };
 }
