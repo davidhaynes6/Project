@@ -348,13 +348,13 @@ typedef double		GLclampd;	/* double precision float in [0,1] */
 #define GL_LINEAR_ATTENUATION			0x1208
 #define GL_QUADRATIC_ATTENUATION		0x1209
 #define GL_AMBIENT				0x1200
-#define GL_DIFFUSE				0x1201
+#define GL_DIFPROJECT				0x1201
 #define GL_SPECULAR				0x1202
 #define GL_SHININESS				0x1601
 #define GL_EMISSION				0x1600
 #define GL_POSITION				0x1203
 #define GL_SPOT_DIRECTION			0x1204
-#define GL_AMBIENT_AND_DIFFUSE			0x1602
+#define GL_AMBIENT_AND_DIFPROJECT			0x1602
 #define GL_COLOR_INDEXES			0x1603
 #define GL_LIGHT_MODEL_TWO_SIDE			0x0B52
 #define GL_LIGHT_MODEL_LOCAL_VIEWER		0x0B51

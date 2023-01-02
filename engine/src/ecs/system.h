@@ -1,9 +1,10 @@
 #pragma once
 #include "entity.h"
-#include <vector>
 #include "assets/registry.h"
 #include "ecs/components/common.h"
+#include "ecs/components/physics.h"
 #include "ecs/components/graphics.h"
+#include "ecs/components/behaviour.h"
 
 namespace project::ecs {
   struct system {
@@ -29,7 +30,7 @@ namespace project::ecs {
 
   protected:
     SDL_Renderer* _renderer = NULL;
-    registry* _registry = NULL;
     asset_registry* _assets = NULL;
+    registry* _registry = NULL;
   };
 }
